@@ -1,0 +1,38 @@
+{
+  "num_events": 100000,
+  "csv_flattened": {
+    "num_events": 100000,
+    "execution_time_ms": 1951.2388000730425,
+    "peak_tracemalloc_mb": 64.48300647735596,
+    "peak_rss_delta_mb": 143.203125,
+    "throughput_eps": 51249.49339683929
+  },
+  "monolithic_root": {
+    "num_events": 100000,
+    "execution_time_ms": 106.52590007521212,
+    "peak_tracemalloc_mb": 32.99075508117676,
+    "peak_rss_delta_mb": 28.17578125,
+    "throughput_eps": 938738.841252648
+  },
+  "awkward_root_streaming": {
+    "num_events": 100000,
+    "execution_time_ms": 191.32720003835857,
+    "peak_tracemalloc_mb": 14.914112091064453,
+    "peak_rss_delta_mb": 15.171875,
+    "throughput_eps": 522664.8379318326,
+    "chunk_step_size": "2 MB"
+  },
+  "hdf5_jagged_streaming": {
+    "num_events": 100000,
+    "execution_time_ms": 129.16509993374348,
+    "peak_tracemalloc_mb": 2.689366340637207,
+    "peak_rss_delta_mb": 11.8046875,
+    "throughput_eps": 774202.9391166499,
+    "chunk_size": 10000
+  },
+  "rss_reduction_vs_csv_percent": {
+    "monolithic_root": 80.32460447354065,
+    "awkward_root_streaming": 89.40534642662303,
+    "hdf5_jagged_streaming": 91.75668303327878
+  }
+}

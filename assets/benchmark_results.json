@@ -1,0 +1,111 @@
+{
+  "test_events": 20000,
+  "test_features": 10,
+  "checkpoint": "models/phasespace_mlp.pt",
+  "parity_threshold": 1e-05,
+  "parity_verified": true,
+  "parity": {
+    "pytorch_vs_onnx": {
+      "max_abs_error": 3.814697265625e-06,
+      "mean_abs_error": 7.62015588406939e-08,
+      "max_rel_error": 1.8922982008007239e-06,
+      "mean_rel_error": 7.063745499635843e-08
+    },
+    "pytorch_vs_cpp": {
+      "max_abs_error": 3.337860107421875e-06,
+      "mean_abs_error": 1.1328756954753771e-07,
+      "max_rel_error": 1.991072622331558e-06,
+      "mean_rel_error": 1.0269377526128665e-07
+    },
+    "onnx_vs_cpp": {
+      "max_abs_error": 3.337860107421875e-06,
+      "mean_abs_error": 8.515715421708592e-08,
+      "max_rel_error": 1.8105778281096718e-06,
+      "mean_rel_error": 7.577865801522421e-08
+    }
+  },
+  "max_abs_error": 3.814697265625e-06,
+  "mean_abs_error": 1.1328756954753771e-07,
+  "max_rel_error": 1.991072622331558e-06,
+  "mean_rel_error": 1.0269377526128665e-07,
+  "benchmark_protocol": {
+    "warmup_passes": 5,
+    "timed_passes": 50,
+    "python_torch_intra_op_threads": 1,
+    "python_torch_inter_op_threads": 1,
+    "python_onnx_intra_op_threads": 1,
+    "python_onnx_inter_op_threads": 1,
+    "sample": "20,000 held-out events; scoring and LUT evaluation only"
+  },
+  "latency_configurations": {
+    "python_online_event_loop": {
+      "events_per_pass": 20000,
+      "batch_size": 1,
+      "thread_count": 1,
+      "warmup_passes": 5,
+      "timed_passes": 50,
+      "mean_batch_ms": 2964.135315991007,
+      "std_batch_ms": 320.45847425344186,
+      "per_event_us": 148.20676579955034,
+      "std_per_event_us": 16.022923712672092,
+      "throughput_eps": 6747.330289580032
+    },
+    "python_streaming_microbatch": {
+      "events_per_pass": 20000,
+      "batch_size": 256,
+      "thread_count": 1,
+      "warmup_passes": 5,
+      "timed_passes": 50,
+      "mean_batch_ms": 34.35627399943769,
+      "std_batch_ms": 3.1519780944122733,
+      "per_event_us": 1.7178136999718845,
+      "std_per_event_us": 0.15759890472061366,
+      "throughput_eps": 582135.3037389136
+    },
+    "python_vectorized_batch": {
+      "events_per_pass": 20000,
+      "batch_size": 20000,
+      "thread_count": 1,
+      "warmup_passes": 5,
+      "timed_passes": 50,
+      "mean_batch_ms": 20.373477996326983,
+      "std_batch_ms": 1.718473575674088,
+      "per_event_us": 1.0186738998163491,
+      "std_per_event_us": 0.08592367878370441,
+      "throughput_eps": 981668.4222303961
+    },
+    "python_onnxruntime_vectorized_batch": {
+      "events_per_pass": 20000,
+      "batch_size": 20000,
+      "thread_count": 1,
+      "warmup_passes": 5,
+      "timed_passes": 50,
+      "mean_batch_ms": 22.058176011778414,
+      "std_batch_ms": 1.117629940164905,
+      "per_event_us": 1.1029088005889207,
+      "std_per_event_us": 0.055881497008245254,
+      "throughput_eps": 906693.2818615914
+    },
+    "cpp_onnxruntime_openmp": {
+      "events_per_pass": 20000,
+      "batch_size": 20000,
+      "thread_count": 12,
+      "ort_intra_op_threads": 1,
+      "ort_inter_op_threads": 1,
+      "warmup_passes": 5,
+      "timed_passes": 50,
+      "mean_batch_ms": 6.6312,
+      "std_batch_ms": 0.9102,
+      "per_event_us": 0.3316,
+      "std_per_event_us": 0.04551,
+      "throughput_eps": 3016027.1684
+    }
+  },
+  "speedup_cpp_over_python": {
+    "python_online_event_loop": 446.94440832192504,
+    "python_streaming_microbatch": 5.180379071085297,
+    "python_vectorized_batch": 3.07199607906016,
+    "python_onnxruntime_vectorized_batch": 3.3260217146831144
+  },
+  "target_speedup_over_microbatch": true
+}

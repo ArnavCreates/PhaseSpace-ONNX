@@ -1,0 +1,129 @@
+{
+  "phasespace_mlp": {
+    "roc_auc": 0.5918668300000001,
+    "initial_separation_auc": 0.5918668300000001,
+    "post_reweighting_closure_auc": 0.5154149520863798,
+    "nominal_events": 10000,
+    "effective_sample_size": 9125.616901548092,
+    "effective_sample_size_fraction": 0.9125616901548091,
+    "mean_ks_unweighted": 0.04924000000000002,
+    "mean_ks_reweighted": 0.02204953351974487,
+    "ks_reduction_percent": 55.22028123528664,
+    "mean_chi2_unweighted": 5.074808362233334,
+    "mean_chi2_reweighted": 2.527286674446954,
+    "per_observable_ks_unweighted": {
+      "lead_lepton_pt": 0.06010000000000004,
+      "sublead_lepton_pt": 0.049699999999999966,
+      "lead_lepton_eta": 0.012200000000000044,
+      "invariant_mass_ll": 0.09460000000000002,
+      "missing_et": 0.03300000000000003,
+      "lead_jet_pt": 0.0353,
+      "sublead_jet_pt": 0.026600000000000068,
+      "delta_r_ll": 0.10830000000000001,
+      "scalar_ht": 0.055400000000000005,
+      "pt_balance_ratio": 0.017199999999999993
+    },
+    "per_observable_ks_reweighted": {
+      "lead_lepton_pt": 0.016164552307128877,
+      "sublead_lepton_pt": 0.012092850112915055,
+      "lead_lepton_eta": 0.012053608369827273,
+      "invariant_mass_ll": 0.09377703480720517,
+      "missing_et": 0.007427743721008295,
+      "lead_jet_pt": 0.012028707742691047,
+      "sublead_jet_pt": 0.017762604951858496,
+      "delta_r_ll": 0.020654541873931898,
+      "scalar_ht": 0.016737816429138186,
+      "pt_balance_ratio": 0.011795874881744384
+    },
+    "per_observable_chi2_unweighted": {
+      "lead_lepton_pt": 5.250090768805245,
+      "sublead_lepton_pt": 4.223738859668569,
+      "lead_lepton_eta": 0.9859437790016193,
+      "invariant_mass_ll": 15.068345705039293,
+      "missing_et": 2.323335398955932,
+      "lead_jet_pt": 2.377964330426523,
+      "sublead_jet_pt": 2.339516134840425,
+      "delta_r_ll": 13.434614646111578,
+      "scalar_ht": 3.600073798211466,
+      "pt_balance_ratio": 1.1444602012726828
+    },
+    "per_observable_chi2_reweighted": {
+      "lead_lepton_pt": 1.1808080029734993,
+      "sublead_lepton_pt": 1.2518527729274052,
+      "lead_lepton_eta": 0.9686835891517137,
+      "invariant_mass_ll": 14.767621990126313,
+      "missing_et": 0.9439165302301482,
+      "lead_jet_pt": 1.2507827011665817,
+      "sublead_jet_pt": 1.1844230420561257,
+      "delta_r_ll": 1.3464363834007074,
+      "scalar_ht": 1.4132932387332295,
+      "pt_balance_ratio": 0.9650484937038167
+    }
+  },
+  "lightgbm": {
+    "roc_auc": 0.641316965,
+    "initial_separation_auc": 0.641316965,
+    "post_reweighting_closure_auc": 0.5161410587749569,
+    "nominal_events": 10000,
+    "effective_sample_size": 8078.210325011258,
+    "effective_sample_size_fraction": 0.8078210325011258,
+    "mean_ks_unweighted": 0.04924000000000002,
+    "mean_ks_reweighted": 0.014760949263572682,
+    "ks_reduction_percent": 70.02244260038043,
+    "mean_chi2_unweighted": 5.074808362233334,
+    "mean_chi2_reweighted": 1.2672225257857839,
+    "per_observable_ks_unweighted": {
+      "lead_lepton_pt": 0.06010000000000004,
+      "sublead_lepton_pt": 0.049699999999999966,
+      "lead_lepton_eta": 0.012200000000000044,
+      "invariant_mass_ll": 0.09460000000000002,
+      "missing_et": 0.03300000000000003,
+      "lead_jet_pt": 0.0353,
+      "sublead_jet_pt": 0.026600000000000068,
+      "delta_r_ll": 0.10830000000000001,
+      "scalar_ht": 0.055400000000000005,
+      "pt_balance_ratio": 0.017199999999999993
+    },
+    "per_observable_ks_reweighted": {
+      "lead_lepton_pt": 0.016189904403686506,
+      "sublead_lepton_pt": 0.010255473089218148,
+      "lead_lepton_eta": 0.018136020469665504,
+      "invariant_mass_ll": 0.019735280179977444,
+      "missing_et": 0.010545112514495858,
+      "lead_jet_pt": 0.01360242300033565,
+      "sublead_jet_pt": 0.009649637937545752,
+      "delta_r_ll": 0.022496888542175242,
+      "scalar_ht": 0.008662996387481692,
+      "pt_balance_ratio": 0.01833575611114502
+    },
+    "per_observable_chi2_unweighted": {
+      "lead_lepton_pt": 5.250090768805245,
+      "sublead_lepton_pt": 4.223738859668569,
+      "lead_lepton_eta": 0.9859437790016193,
+      "invariant_mass_ll": 15.068345705039293,
+      "missing_et": 2.323335398955932,
+      "lead_jet_pt": 2.377964330426523,
+      "sublead_jet_pt": 2.339516134840425,
+      "delta_r_ll": 13.434614646111578,
+      "scalar_ht": 3.600073798211466,
+      "pt_balance_ratio": 1.1444602012726828
+    },
+    "per_observable_chi2_reweighted": {
+      "lead_lepton_pt": 1.1387587017049936,
+      "sublead_lepton_pt": 1.0077325667022206,
+      "lead_lepton_eta": 1.2692436126646462,
+      "invariant_mass_ll": 1.998055739160594,
+      "missing_et": 1.230937999469182,
+      "lead_jet_pt": 1.2528031828601145,
+      "sublead_jet_pt": 1.3786472554616316,
+      "delta_r_ll": 1.1648674941659414,
+      "scalar_ht": 1.1195116711243993,
+      "pt_balance_ratio": 1.111667034544115
+    }
+  },
+  "architectural_insights": {
+    "mlp_cxx_deployable": true,
+    "lgbm_cxx_deployable": false,
+    "density_ratio_continuity": "The MLP score is continuous; LUT calibration is monotone and piecewise linear."
+  }
+}
