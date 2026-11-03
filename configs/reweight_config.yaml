@@ -1,0 +1,46 @@
+dataset:
+  num_events_per_hypothesis: 50000
+  random_seed: 42
+  tree_name: "PhaseSpaceTree"
+  step_size: "2 MB"
+  nominal_label: 0
+  variation_label: 1
+
+observables:
+  - lead_lepton_pt
+  - sublead_lepton_pt
+  - lead_lepton_eta
+  - invariant_mass_ll
+  - missing_et
+  - lead_jet_pt
+  - sublead_jet_pt
+  - delta_r_ll
+  - scalar_ht
+  - pt_balance_ratio
+
+mlp:
+  hidden_dims: [128, 64, 32]
+  learning_rate: 0.0015
+  batch_size: 1024
+  epochs: 20
+  weight_decay: 0.0001
+  dropout: 0.05
+
+lightgbm:
+  n_estimators: 200
+  learning_rate: 0.05
+  num_leaves: 31
+  max_depth: 6
+  subsample: 0.8
+  colsample_bytree: 0.8
+  random_state: 42
+
+calibration:
+  num_bins: 50
+  eps_clip: 1.0e-5
+  weight_clip_max: 20.0
+  lut_grid_size: 1001
+
+export:
+  onnx_opset: 17
+  model_name: "phasespace_mlp"

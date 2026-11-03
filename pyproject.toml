@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phasespace-onnx"
+version = "1.0.0"
+description = "Monte Carlo phase-space likelihood-ratio reweighting with Python training and C++ ONNX Runtime inference"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Arnav Jain", email = "arnav.learns0908@gmail.com"}
+]
+dependencies = [
+    "torch>=2.0.0",
+    "uproot>=5.0.0",
+    "awkward>=2.0.0",
+    "h5py>=3.8.0",
+    "lightgbm>=4.0.0",
+    "onnx>=1.14.0",
+    "onnxruntime>=1.16.0",
+    "scikit-learn>=1.2.0",
+    "scipy>=1.10.0",
+    "numpy>=1.24.0",
+    "pandas>=2.0.0",
+    "matplotlib>=3.7.0",
+    "pyyaml>=6.0",
+    "pytest>=7.0.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
