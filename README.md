@@ -4,8 +4,6 @@ PhaseSpace-ONNX is a reproducible Monte Carlo likelihood-ratio reweighting pipel
 
 The generated benchmark contains 100,000 synthetic Monte Carlo events across 10 continuous phase-space observables. It is a self-contained sample for software and statistical-method demonstrations on columnar scientific data pipelines.
 
-The likelihood-ratio method follows Cranmer, Pavez, and Louppe, “Approximating Likelihood Ratios with Calibrated Classifiers” (2015), [arXiv:1506.02169](https://arxiv.org/abs/1506.02169).
-
 ## Data and training
 
 The generator writes ROOT and HDF5 samples. HDF5 stores event-level features and labels under kinematics/features and kinematics/labels. Variable-length jet transverse momenta are stored as a flattened float32 array at kinematics/jet_pt_flat and an int64 CSR offset array at kinematics/jet_pt_offsets.
@@ -14,7 +12,7 @@ Both ROOT and HDF5 readers process bounded chunks. They sort each event's jets b
 
 The pipeline uses a deterministic 60,000 / 20,000 / 20,000 train, calibration, and test split. PhaseSpaceMLP computes its standardization statistics over chunks with a two-pass Welford procedure, then updates the network from streamed mini-batches. Its checkpoint includes network parameters and scaler state at models/phasespace_mlp.pt. LightGBM uses the same training partition and is trained from a materialized feature matrix.
 
-The score-to-probability calibration combines histogram estimates with isotonic regression. Its response is monotonically non-decreasing, and the exported uniform-grid lookup table is used by Python and C++ inference.
+The score-to-probability calibration combines histogram estimates with a monotone isotonic curve. The exported uniform-grid lookup table is shared by Python and C++ inference.
 
 Post-reweighting closure AUC uses separate, seeded discriminator-fit and held-out test subsets. Weighted binned chi-squared uses the sum of squared event weights for each bin's variance.
 
@@ -28,16 +26,16 @@ Source: assets/ingestion_memory_comparison.json. RSS reduction is relative to CS
 
 | Ingestion path | Events | Time (ms) | Traced peak (MB) | RSS delta (MB) | Throughput (events/s) |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| CSV flattening | 100000 | 1951.2388000730425 | 64.48300647735596 | 143.203125 | 51249.49339683929 |
-| Monolithic ROOT | 100000 | 106.52590007521212 | 32.99075508117676 | 28.17578125 | 938738.841252648 |
-| Awkward ROOT streaming, 2 MB step | 100000 | 191.32720003835857 | 14.914112091064453 | 15.171875 | 522664.8379318326 |
-| Jagged HDF5 streaming, 10000-event chunks | 100000 | 129.16509993374348 | 2.689366340637207 | 11.8046875 | 774202.9391166499 |
+| CSV flattening | 100000 | 2168.6293000821024 | 64.45106887817383 | 143.03515625 | 46112.07641444948 |
+| Monolithic ROOT | 100000 | 114.23270008526742 | 32.964728355407715 | 22.06640625 | 875406.0783414589 |
+| Awkward ROOT streaming, 2 MB step | 100000 | 214.88670003600419 | 14.94155502319336 | 15.3671875 | 465361.5136871897 |
+| Jagged HDF5 streaming, 10000-event chunks | 100000 | 141.62729983218014 | 2.664576530456543 | 11.5625 | 706078.5605493715 |
 
 | Ingestion path | RSS reduction vs CSV (%) |
 | --- | ---: |
-| Monolithic ROOT | 80.32460447354065 |
-| Awkward ROOT streaming | 89.40534642662303 |
-| Jagged HDF5 streaming | 91.75668303327878 |
+| Monolithic ROOT | 84.57273943796596 |
+| Awkward ROOT streaming | 89.25635633722042 |
+| Jagged HDF5 streaming | 91.9163230193626 |
 
 The benchmark records Python tracemalloc peak and process RSS delta separately. RSS delta is measured with the platform-specific process API and is not a substitute for a process high-water mark.
 
@@ -78,13 +76,13 @@ Source: assets/benchmark_results.json. Each configuration uses 5 warmup passes a
 
 | Execution path | Batch size | Threads | Mean pass (ms) | Std pass (ms) | Mean per event (µs) | Std per event (µs) | Throughput (events/s) | C++ speedup |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| Python online event loop | 1 | 1 | 2964.135315991007 | 320.45847425344186 | 148.20676579955034 | 16.022923712672092 | 6747.330289580032 | 446.94440832192504 |
-| Python streaming micro-batch | 256 | 1 | 34.35627399943769 | 3.1519780944122733 | 1.7178136999718845 | 0.15759890472061366 | 582135.3037389136 | 5.180379071085297 |
-| Python vectorized PyTorch | 20000 | 1 | 20.373477996326983 | 1.718473575674088 | 1.0186738998163491 | 0.08592367878370441 | 981668.4222303961 | 3.07199607906016 |
-| Python vectorized ONNX Runtime | 20000 | 1 | 22.058176011778414 | 1.117629940164905 | 1.1029088005889207 | 0.055881497008245254 | 906693.2818615914 | 3.3260217146831144 |
-| C++ ONNX Runtime + OpenMP | 20000 | 12 | 6.6312 | 0.9102 | 0.3316 | 0.04551 | 3016027.1684 | 1 |
+| Python online event loop | 1 | 1 | 3365.9324180008844 | 101.26163547812845 | 168.29662090004422 | 5.063081773906423 | 5941.889947950448 | 528.4038332811435 |
+| Python streaming micro-batch | 256 | 1 | 35.974830011837184 | 8.170601628912442 | 1.7987415005918592 | 0.4085300814456221 | 555944.2530630217 | 5.647540033255445 |
+| Python vectorized PyTorch | 20000 | 1 | 21.548129986040294 | 1.4420726984237555 | 1.0774064993020147 | 0.07210363492118778 | 928154.7871187322 | 3.3827519601319143 |
+| Python vectorized ONNX Runtime | 20000 | 1 | 24.316608007065952 | 0.9383649553586755 | 1.2158304003532976 | 0.046918247767933775 | 822483.1355667852 | 3.817363894358862 |
+| C++ ONNX Runtime + OpenMP | 20000 | 12 | 6.3692 | 1.0942 | 0.3185 | 0.05471 | 3140113.76 | 1 |
 
-The C++ driver measured 5.180379071085297x lower per-event latency than the Python streaming micro-batch path, meeting the 4.2x target. The measured ratios against vectorized PyTorch and vectorized ONNX Runtime are 3.07199607906016x and 3.3260217146831144x, respectively; those results are shown directly.
+The C++ driver measured 5.647540033255445x lower per-event latency than the Python streaming micro-batch path. The measured ratios against vectorized PyTorch and vectorized ONNX Runtime are 3.3827519601319143x and 3.817363894358862x, respectively; the JSON retains the full timing distributions and run configuration.
 
 ## Build and run
 
@@ -104,7 +102,7 @@ sudo apt-get update
 sudo apt-get install -y build-essential cmake libhdf5-dev python3-venv
 ~~~
 
-### Enterprise & Cluster Linux
+### Linux (GCC 12+)
 
 On shared workstations or computing clusters, activate an environment providing a modern C++20 compiler, CMake, OpenMP, and HDF5 development libraries (via environment modules or package manager) before building.
 
@@ -129,11 +127,11 @@ python scripts/benchmark_parity.py
 Run the parity benchmark after the build and pipeline have produced the model and test data.
 ### Windows PowerShell with MSYS2 UCRT64
 
-Install the MSYS2 UCRT64 compiler toolchain, CMake, Ninja, and HDF5 package. Extract the Windows x64 ONNX Runtime C++ SDK and set its location. From the project directory:
+Install the MSYS2 UCRT64 compiler toolchain, CMake, Ninja, and HDF5 package. Set `MSYS2_ROOT` to the MSYS2 installation directory and `ONNXRUNTIME_ROOT` to the extracted Windows x64 ONNX Runtime C++ SDK. From the project directory:
 
 ~~~powershell
-$env:Path = "C:\msys64\ucrt64\bin;" + $env:Path
-$env:ONNXRUNTIME_ROOT = "C:\deps\onnxruntime-win-x64-1.20.1"
+$env:Path = "$env:MSYS2_ROOT\ucrt64\bin;" + $env:Path
+$env:ONNXRUNTIME_ROOT = "path\to\onnxruntime-win-x64"
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
 .\.venv\Scripts\python.exe -m pip install -e .
@@ -157,3 +155,7 @@ A fresh checkout can run pytest before generating project data; tests create the
 - data/test_kinematics.h5 and data/cpp_weights_out.h5: held-out inputs and C++ weights.
 - assets/ingestion_memory_comparison.json, assets/model_comparison.json, and assets/benchmark_results.json: full precision measurements.
 - assets/kinematic_reweighting_closure.png and assets/cpp_vs_python_latency.png: generated plots.
+
+## References & Acknowledgments
+
+The classifier ratio estimator follows K. Cranmer, J. Pavez, and G. Louppe, [“Approximating Likelihood Ratios with Calibrated Discriminative Classifiers”](https://arxiv.org/abs/1506.02169) (2015). The columnar readers use [Uproot](https://github.com/scikit-hep/uproot5), [Awkward Array](https://github.com/scikit-hep/awkward), and HDF5 for the sample formats.

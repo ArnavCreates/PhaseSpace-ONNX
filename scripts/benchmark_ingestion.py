@@ -247,9 +247,7 @@ def _ensure_samples(root_path: str, h5_path: str) -> None:
 
 
 def main() -> None:
-    print("=" * 75)
-    print("PHASESPACE-ONNX: DATA INGESTION MEMORY & THROUGHPUT COMPARISON")
-    print("=" * 75)
+    print("PhaseSpace columnar ingestion measurements")
     data_dir = os.path.join(PROJECT_ROOT, "data")
     assets_dir = os.path.join(PROJECT_ROOT, "assets")
     os.makedirs(data_dir, exist_ok=True)

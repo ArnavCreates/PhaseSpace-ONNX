@@ -75,9 +75,7 @@ def _collect_partition(stream_fn: ChunkStream) -> Tuple[np.ndarray, np.ndarray]:
 
 
 def main() -> None:
-    print("=" * 75)
-    print("PHASESPACE-ONNX: NEURAL LIKELIHOOD RATIO REWEIGHTING PIPELINE")
-    print("=" * 75)
+    print("PhaseSpace likelihood-ratio training and closure evaluation")
 
     config_path = os.path.join(PROJECT_ROOT, "configs", "reweight_config.yaml")
     with open(config_path, "r", encoding="utf-8") as config_file:

@@ -1,0 +1,49 @@
+name: PhaseSpace ONNX CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ninja-build g++ libhdf5-dev libomp-dev curl tar
+
+      - name: Provision ONNX Runtime C++ SDK
+        run: |
+          mkdir -p .deps
+          curl --fail --location --retry 3 https://github.com/microsoft/onnxruntime/releases/download/v1.20.1/onnxruntime-linux-x64-1.20.1.tgz -o .deps/ort.tgz
+          tar -xzf .deps/ort.tgz -C .deps
+          mv .deps/onnxruntime-linux-x64-1.20.1 .deps/onnxruntime
+          rm -f .deps/ort.tgz
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements.txt pytest
+          pip install -e .
+
+      - name: Run Python test suite
+        run: pytest -v
+
+      - name: Build C++20 ONNX Runtime driver
+        run: |
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DONNXRUNTIME_ROOT="$PWD/.deps/onnxruntime"
+          cmake --build build

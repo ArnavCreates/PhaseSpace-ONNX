@@ -2,37 +2,37 @@
   "num_events": 100000,
   "csv_flattened": {
     "num_events": 100000,
-    "execution_time_ms": 1951.2388000730425,
-    "peak_tracemalloc_mb": 64.48300647735596,
-    "peak_rss_delta_mb": 143.203125,
-    "throughput_eps": 51249.49339683929
+    "execution_time_ms": 2168.6293000821024,
+    "peak_tracemalloc_mb": 64.45106887817383,
+    "peak_rss_delta_mb": 143.03515625,
+    "throughput_eps": 46112.07641444948
   },
   "monolithic_root": {
     "num_events": 100000,
-    "execution_time_ms": 106.52590007521212,
-    "peak_tracemalloc_mb": 32.99075508117676,
-    "peak_rss_delta_mb": 28.17578125,
-    "throughput_eps": 938738.841252648
+    "execution_time_ms": 114.23270008526742,
+    "peak_tracemalloc_mb": 32.964728355407715,
+    "peak_rss_delta_mb": 22.06640625,
+    "throughput_eps": 875406.0783414589
   },
   "awkward_root_streaming": {
     "num_events": 100000,
-    "execution_time_ms": 191.32720003835857,
-    "peak_tracemalloc_mb": 14.914112091064453,
-    "peak_rss_delta_mb": 15.171875,
-    "throughput_eps": 522664.8379318326,
+    "execution_time_ms": 214.88670003600419,
+    "peak_tracemalloc_mb": 14.94155502319336,
+    "peak_rss_delta_mb": 15.3671875,
+    "throughput_eps": 465361.5136871897,
     "chunk_step_size": "2 MB"
   },
   "hdf5_jagged_streaming": {
     "num_events": 100000,
-    "execution_time_ms": 129.16509993374348,
-    "peak_tracemalloc_mb": 2.689366340637207,
-    "peak_rss_delta_mb": 11.8046875,
-    "throughput_eps": 774202.9391166499,
+    "execution_time_ms": 141.62729983218014,
+    "peak_tracemalloc_mb": 2.664576530456543,
+    "peak_rss_delta_mb": 11.5625,
+    "throughput_eps": 706078.5605493715,
     "chunk_size": 10000
   },
   "rss_reduction_vs_csv_percent": {
-    "monolithic_root": 80.32460447354065,
-    "awkward_root_streaming": 89.40534642662303,
-    "hdf5_jagged_streaming": 91.75668303327878
+    "monolithic_root": 84.57273943796596,
+    "awkward_root_streaming": 89.25635633722042,
+    "hdf5_jagged_streaming": 91.9163230193626
   }
 }
