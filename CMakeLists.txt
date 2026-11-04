@@ -17,17 +17,26 @@ elseif(WIN32 AND DEFINED ENV{MSYS2_PREFIX})
 elseif(WIN32 AND DEFINED ENV{MSYS2_ROOT})
     list(APPEND _HDF5_HINTS "$ENV{MSYS2_ROOT}/ucrt64")
 endif()
-find_package(HDF5 REQUIRED COMPONENTS C HINTS ${_HDF5_HINTS})
-if(TARGET HDF5::HDF5)
-    set(_PHASESPACE_HDF5_LIBRARIES HDF5::HDF5)
+if(_HDF5_HINTS)
+    list(PREPEND CMAKE_PREFIX_PATH ${_HDF5_HINTS})
+endif()
+find_package(HDF5 QUIET CONFIG)
+if(NOT HDF5_FOUND)
+    find_package(HDF5 REQUIRED COMPONENTS C)
+endif()
+
+if(TARGET hdf5::hdf5-shared)
+    set(ORT_DRIVER_HDF5_LIBS hdf5::hdf5-shared)
+elseif(TARGET hdf5::hdf5)
+    set(ORT_DRIVER_HDF5_LIBS hdf5::hdf5)
+elseif(TARGET HDF5::HDF5)
+    set(ORT_DRIVER_HDF5_LIBS HDF5::HDF5)
 elseif(TARGET hdf5-shared)
-    set(_PHASESPACE_HDF5_LIBRARIES hdf5-shared)
+    set(ORT_DRIVER_HDF5_LIBS hdf5-shared)
 elseif(TARGET hdf5-static)
-    set(_PHASESPACE_HDF5_LIBRARIES hdf5-static)
-elseif(HDF5_LIBRARIES)
-    set(_PHASESPACE_HDF5_LIBRARIES ${HDF5_LIBRARIES})
+    set(ORT_DRIVER_HDF5_LIBS hdf5-static)
 else()
-    message(FATAL_ERROR "HDF5 was found but did not provide a C library target")
+    set(ORT_DRIVER_HDF5_LIBS ${HDF5_C_LIBRARIES} ${HDF5_LIBRARIES})
 endif()
 
 set(ONNXRUNTIME_ROOT "" CACHE PATH "ONNX Runtime C++ SDK root directory")
@@ -62,10 +71,11 @@ target_include_directories(phasespace_infer_bench PRIVATE
     cpp/include
     "${ONNXRUNTIME_INCLUDE_DIR}"
     ${HDF5_INCLUDE_DIRS}
+    ${HDF5_C_INCLUDE_DIRS}
 )
 target_link_libraries(phasespace_infer_bench PRIVATE
     OpenMP::OpenMP_CXX
-    ${_PHASESPACE_HDF5_LIBRARIES}
+    ${ORT_DRIVER_HDF5_LIBS}
     "${ONNXRUNTIME_LIBRARY}"
 )
 
